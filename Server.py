@@ -27,6 +27,7 @@ class Server():
 
         while self.running:
             (clientSock, clientAddr) = self.sock.accept()
+            self.clientCount += 1
             client = Client(self, clientSock, clientAddr)
             client.run()
             self.threadPool.append(client)

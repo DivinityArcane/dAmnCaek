@@ -13,6 +13,11 @@ class Client(threading.Thread):
         print('Client incoming: {0}'.format(self.addr))
 
     def run(self):
+        if self.server.clientCount > self.server.maxConnections:
+            self.sock.sendall(bytes('disconnect\ne=Server too busy\n\0', 'utf-8'))
+            self.sock.close()
+            return
+        
         self.running = True
         data = ''
 
