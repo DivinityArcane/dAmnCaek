@@ -1,6 +1,6 @@
 import socket
 import sys 
-import threading 
+from _thread import start_new_thread, allocate_lock
 from Client import Client
 # Modified 8/22/2012
 #
@@ -13,8 +13,9 @@ class Server():
         self.port = port
         self.maxConnections = maxCn
         self.clients = {}
-        self.threadPool = []
+        self.channels = {}
         self.clientCount = 0
+        self.lock = allocate_lock()
         try:            
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -40,12 +41,9 @@ class Server():
             try:            
                 (clientSock, clientAddr) = self.sock.accept()
                 self.clientCount += 1
-                client = Client(self, clientSock, clientAddr)
-                client.run()
-                self.threadPool.append(client)
+                client = start_new_thread(Client, (self, clientSock, clientAddr))
             except KeyboardInterrupt:
                 print("Server stopped [Keyboard interrupt]")
                 self.running = False
+        print('Server has stopped running, killing threads.')
         self.sock.close()
-        for thread in self.threadPool:
-            thread.join()

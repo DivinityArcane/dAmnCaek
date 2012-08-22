@@ -3,16 +3,17 @@ from Database import Database
 from Server import Server
 
 print('dAmnCaek version 0.1 booting up...')
+db = Database()
 
 #TODO: Config
 if False == os.path.exists('Database/config'):
     print('Server is not configured.')
     # add more shit later?
     config = {'address':'127.0.0.1','port':'3900','maxConnections':'50'}
-    Database.saveFile('Database/config', config)
+    db.saveFile('Database/config', config)
 else:
     print('Attempting to load server configuration...')
-    config = Database.loadFile('Database/config')
+    config = db.loadFile('Database/config')
     if config is None:
         print('Failed to load config!')
     else:
@@ -23,4 +24,6 @@ else:
                       int(config['port']),
                       int(config['maxConnections']))
 
+        serv.channels['botdom'] = {'owner':'core','desc':'Bots ftw!','title':'this is a title','topic':'this is a topic'} #for now
+        serv.channels['datashare'] = {'owner':'core','desc':'Bots ftw!','title':'this is a title','topic':'this is a topic'} #for now
         serv.run()

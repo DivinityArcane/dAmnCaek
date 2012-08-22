@@ -6,7 +6,7 @@ class Database():
     def __init__(self):
         {}#TODO: constructor
         
-    def saveFile(file, data):
+    def saveFile(self, file, data):
         if isinstance(data, dict):
             try:
                 fileName = re.sub(r'[^a-zA-Z0-9/]*', '', file)
@@ -24,7 +24,7 @@ class Database():
         else:
             print('Error @ Database.SaveFile: data must be a dictionary.')
 
-    def loadFile(file):
+    def loadFile(self, file):
         if os.path.exists(file):
             try:
                 fileName = re.sub(r'[^a-zA-Z0-9/]*', '', file)
