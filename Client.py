@@ -37,6 +37,8 @@ class Client(threading.Thread):
                 self.sock.close()
                 self.running = False
 
+        print('Client disconnected: {0}'.format(self.addr))
+
     def process(self, data):
         #TODO: Handle packets!
         print('Unhandled packet: {0}'.format(data.replace('\n', '\\n')))

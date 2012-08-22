@@ -17,9 +17,9 @@ class Server():
             self.sock.bind((ip, port))
             self.sock.listen(self.maxConnections)
             if self.sock:
-                print('Woot! We established the socket on {0}:{1}\n'.format(self.ip ,self.port))
+                print('Woot! We established the socket on {0}:{1}'.format(self.ip ,self.port))
         except:
-            print('Error while setting up server: {0}\n'.format(sys.exc_info()[0]))
+            print('Error while setting up server: {0}'.format(sys.exc_info()[0]))
             return
 
     def run(self):

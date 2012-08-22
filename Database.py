@@ -12,7 +12,7 @@ class Database():
                 fileName = re.sub(r'[^a-zA-Z0-9/]*', '', file)
                 fileData = ''
                 for key in data:
-                    fileData += '{0}={1}\0'.format(key, data[key])
+                    fileData += '{0}={1}\0'.format(str(key), str(data[key]))
                 fileHandle = open(fileName, 'w+')
                 if fileHandle:
                     fileHandle.write(fileData)
