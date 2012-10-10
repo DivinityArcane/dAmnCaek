@@ -2,11 +2,17 @@ import os
 import sys
 import re
 
+# Database instance
 class Database():
+    # constructor, not used.
     def __init__(self):
         {}#TODO: constructor
-        
+
+    # Saves the specified file.
     def saveFile(self, file, data):
+        '''(self, str, dict) -> None
+
+        Saves (or creates) the specified file, with contents from the dict data.'''
         if isinstance(data, dict):
             try:
                 fileName = re.sub(r'[^a-zA-Z0-9/]*', '', file)
@@ -24,7 +30,12 @@ class Database():
         else:
             print('Error @ Database.SaveFile: data must be a dictionary.')
 
+    # Loads the specified file.
     def loadFile(self, file):
+        '''(self, str) -> None
+
+        Loads the data from the specified file into a new dict instance and returns it.'''
+        
         if os.path.exists(file):
             try:
                 fileName = re.sub(r'[^a-zA-Z0-9/]*', '', file)

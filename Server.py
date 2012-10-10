@@ -2,13 +2,15 @@ import socket
 import sys 
 from _thread import start_new_thread, allocate_lock
 from Client import Client
-# Modified 8/22/2012
-#
-# try a more direct error handling method. for the hell of it. 
 import traceback
 
+# Server class/instance
 class Server():
+    # constructor, initiate the instance.
     def __init__(self, ip, port, maxCn):
+        '''(self, str, int, int) -> None
+
+        Creates a new server instance.'''
         self.ip = ip
         self.port = port
         self.maxConnections = maxCn
@@ -35,6 +37,10 @@ class Server():
             
 
     def run(self):
+        '''(self) -> None
+
+        Start running the server and waiting for connections. On connect,
+        process the connection(s).'''
         # if the server failed to load 
         # it wont attempt this, which would only return another traceback. so yeah :P
         while self.running:

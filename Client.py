@@ -4,9 +4,13 @@ import time
 import threading
 import dAmn
 
+# client instance
 class Client(threading.Thread):
-
+    # constructor, create a new client instance.
     def __init__(self, parent, sock, clientAddr):
+        '''(self, Server, Socket, ClientAddress) -> None
+
+        Create a new client instance and run it.'''
         threading.Thread.__init__(self)
         self.username = ''
         self.realname = 'dAmnCaek Supporter'
@@ -25,7 +29,11 @@ class Client(threading.Thread):
         print('Client incoming: {0}'.format(self.addr))
         self.run()
 
+    # checks if logged in
     def loginCheck(self):
+        '''(self) -> None
+
+        Checks if user has logged in yet, if not, disconnect.'''
         if False == self.loggedIn:
             try:
                 self.disconnect('no login')
@@ -33,15 +41,24 @@ class Client(threading.Thread):
             except:
                 self.running = False
 
+    # perform ping/pong activities
     def pingPong(self):
+        '''(self) -> None
+
+        Checks how long it's been since last pong. If > 1m, disconnect. Else, ping.'''
         if time.time() - self.lastPong > 60:
             self.disconnect('timed out')
         else:
             self.send('ping\n\0')
             self.lastPing = time.time()
             threading.Timer(60, self.pingPong, ()).start()
-
+            
+    # run client instance
     def run(self):
+        '''(self) -> None
+
+        Main loop for the client instance. Handles data IO.'''
+        
         if self.server.clientCount > self.server.maxConnections:
             self.disconnect('server busy')
             return
@@ -76,13 +93,21 @@ class Client(threading.Thread):
         if self.loggedIn and self.username.lower() in self.server.clients: #bloody well should be
             del self.server.clients[self.username.lower()]
 
+    # send data to the remote client
     def send(self, data):
+        '''(self, str) -> None
+
+        Sends the specified string packet to the remote client.'''
         try:
             self.sock.sendall(bytes(data, 'utf-8'))
         except:
             self.running = False
 
+    # disconnect client
     def disconnect(self, reason):
+        '''(self, str) -> None
+
+        Disconnects the client with the specified reason.'''
         self.send('disconnect\ne={0}\n\0'.format(reason))
         try:
             self.sock.close()
@@ -90,7 +115,12 @@ class Client(threading.Thread):
         except:
             self.running = False
 
+    # process a packet
     def process(self, data):
+        '''(self, str) -> None
+
+        Processes the specified string packet and performs actions accordingly.'''
+        
         packet = dAmn.Packet()
         packet.parse(data)
         if packet.command == 'dAmnClient':

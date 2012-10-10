@@ -1,7 +1,12 @@
 import os
 
+# dAmn Packet instance
 class Packet:
+    # constructor, initializes a blank packet.
     def __init__(self):
+        '''(self) -> None
+
+        Create a new, blank packet.'''
         self.command = ''
         self.subCommand = ''
         self.parameter = ''
@@ -11,7 +16,12 @@ class Packet:
         self.arguments = {}
         self.separator = '='
 
+    # parse down a packet from the string-representation of the bytes.
     def parse(self, data):
+        '''(self, str) -> None
+
+        Parse down the string version of a dAmn packet into an object.'''
+        
         if '\n' not in data:
             print('Attempted to parse an invalid packet: {0}'.format(data.replace('\n', '\\n')))
         else:
@@ -37,8 +47,12 @@ class Packet:
 
             self.parseArgs(data)
 
-
+    # parse out arguments
     def parseArgs(self, data):
+        '''(self, str) -> None
+
+        Finds and parses arguments from the specified chunk of data.'''
+        
         if '\n' not in data:
             return
         else:
